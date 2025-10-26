@@ -14,13 +14,127 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      matches: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_seen_together_at: string | null
+          pair_id: string
+          shared_interests: string[]
+          status: string
+          uid_a: string
+          uid_b: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_seen_together_at?: string | null
+          pair_id: string
+          shared_interests?: string[]
+          status?: string
+          uid_a: string
+          uid_b: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_seen_together_at?: string | null
+          pair_id?: string
+          shared_interests?: string[]
+          status?: string
+          uid_a?: string
+          uid_b?: string
+        }
+        Relationships: []
+      }
+      presence: {
+        Row: {
+          geohash: string
+          lat: number
+          lng: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          geohash: string
+          lat: number
+          lng: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          geohash?: string
+          lat?: number
+          lng?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          availability_status: string | null
+          avatar_url: string | null
+          created_at: string | null
+          emoji_signature: string | null
+          geohash: string | null
+          id: string
+          interests: string[] | null
+          is_visible: boolean | null
+          lat: number | null
+          lng: number | null
+          location_accuracy: number | null
+          location_updated_at: string | null
+          name: string | null
+          onboarded: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          avatar_url?: string | null
+          created_at?: string | null
+          emoji_signature?: string | null
+          geohash?: string | null
+          id: string
+          interests?: string[] | null
+          is_visible?: boolean | null
+          lat?: number | null
+          lng?: number | null
+          location_accuracy?: number | null
+          location_updated_at?: string | null
+          name?: string | null
+          onboarded?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          avatar_url?: string | null
+          created_at?: string | null
+          emoji_signature?: string | null
+          geohash?: string | null
+          id?: string
+          interests?: string[] | null
+          is_visible?: boolean | null
+          lat?: number | null
+          lng?: number | null
+          location_accuracy?: number | null
+          location_updated_at?: string | null
+          name?: string | null
+          onboarded?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_stale_presence: { Args: never; Returns: number }
+      generate_pair_id: {
+        Args: { user_a: string; user_b: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
