@@ -73,9 +73,54 @@ serve(async (req) => {
 
     const { lat, lng, interests, radius = 1000 }: SearchPlacesRequest = await req.json();
     
-    if (!lat || !lng || !interests || interests.length === 0) {
+    // Validate latitude is a number and within valid range
+    if (typeof lat !== 'number' || lat < -90 || lat > 90) {
       return new Response(
-        JSON.stringify({ error: 'Missing required parameters: lat, lng, interests' }), 
+        JSON.stringify({ error: 'Invalid latitude. Must be a number between -90 and 90' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate longitude is a number and within valid range
+    if (typeof lng !== 'number' || lng < -180 || lng > 180) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid longitude. Must be a number between -180 and 180' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate radius is within reasonable bounds
+    if (typeof radius !== 'number' || radius < 10 || radius > 50000) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid radius. Must be a number between 10 and 50000 meters' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate interests array
+    if (!Array.isArray(interests) || interests.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameter: interests must be a non-empty array' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+    
+    // Validate interests array length to prevent abuse
+    if (interests.length > 50) {
+      return new Response(
+        JSON.stringify({ error: 'Too many interests. Maximum 50 allowed' }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
