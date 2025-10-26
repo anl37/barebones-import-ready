@@ -73,23 +73,10 @@ serve(async (req) => {
 
     const { lat, lng }: GeocodeRequest = await req.json();
     
-    // Validate latitude is a number and within valid range
-    if (typeof lat !== 'number' || lat < -90 || lat > 90) {
-      console.error('Invalid latitude:', lat);
+    if (!lat || !lng) {
+      console.error('Missing lat or lng parameters');
       return new Response(
-        JSON.stringify({ error: 'Invalid latitude. Must be a number between -90 and 90' }), 
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-    
-    // Validate longitude is a number and within valid range
-    if (typeof lng !== 'number' || lng < -180 || lng > 180) {
-      console.error('Invalid longitude:', lng);
-      return new Response(
-        JSON.stringify({ error: 'Invalid longitude. Must be a number between -180 and 180' }), 
+        JSON.stringify({ error: 'Missing lat or lng parameters' }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
